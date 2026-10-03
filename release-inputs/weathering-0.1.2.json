@@ -1,0 +1,37 @@
+{
+  "baseSourceUrl": "https://github.com/MubbleYT/mubbles-workshop/releases/download/weathering--v0.1.1/mubbles-weathering-0.1.1-source.zip",
+  "baseSourceSha256": "c1b2ba02da4631319baff3cd63e2e428cb6e12109b2d757217bdedc6410b09fd",
+  "overlayPath": "release-inputs/weathering-0.1.2.zip",
+  "overlaySha256": "e7d589893a75683b88f7dce27bd2b899ff24d2d0cd397dd2f980d78eb1e31985",
+  "expectedJarSha256": "4f5ef00477178fe60ec126f2829972a40b12b8fd659d30547c4afafada3a055a",
+  "metadata": {
+    "id": "weathering",
+    "title": "Mubble's Weathering",
+    "author": "Mubble",
+    "type": "Mods",
+    "summary": "Wood and masonry grow light, medium and full moss with fine branching patterns. Includes cracks, honeycomb protection and 201 masonry materials.",
+    "description": "# Mubble's Weathering 0.1.2\n\nAdds natural-looking moss growth across custom wood and masonry, using Mubble's edited moss texture.\n\nMoss progresses through **light \u2192 medium \u2192 full** stages. Small branching patches expand into the same connected pattern, with two visual variations between blocks. Medium/full moss makes neighboring blocks damp, letting the growth spread outward.\n\nEach growth step takes **4\u201312 Minecraft days** of loaded, exposed time. Dampness accelerates progress by **2.5\u00d7**. Wood can grow slowly while dry; masonry moss stages pause while dry. Fully enclosed, unloaded or honeycomb-protected blocks do not progress.\n\nSupports 81 wood types/shapes and 201 masonry materials, including available stairs, slabs, walls and pillars. Dry masonry cracks or roughens; no infested blocks or silverfish are created. Drops retain their moss stage; all stages appear in the creative tab. Axes restore custom weathered blocks, and sneak-use removes honeycomb protection.\n\n**Install:** Minecraft Java **26.3**, **Java 25**, **Fabric Loader 0.19.5+** and **Fabric API 0.161.0+26.3**. Replace the old Weathering JAR. The server and every client require this mod.\n\nExisting custom moss IDs remain compatible; older moss blocks without a stage load fully mossy. Existing vanilla mossy bricks/cobblestone remain vanilla.\n\nCheck progress with `/mubbleweathering inspect x y z`; demonstrate one available growth step with `/mubbleweathering age x y z` (operator permission). Settings: `config/mubble-weathering.json`.\n\nValidated with **2,871 dedicated-server checks**, **four real restart checks** and **489 graphical client checks** on OpenGL llvmpipe. The gallery was visually inspected. No new shader compatibility or hardware/FPS benchmark is claimed.\n\nSource includes the editable moss PNG and stage generator. Custom blocks require the mod to remain installed; restore them before uninstalling.",
+    "method": "Primarily AI-generated",
+    "tools": "ChatGPT",
+    "source": "https://github.com/MubbleYT/mubbles-workshop/releases/download/weathering--v0.1.2/mubbles-weathering-0.1.2-source.zip",
+    "license": "MIT",
+    "tags": [
+      "Building",
+      "Moss",
+      "Weathering"
+    ],
+    "features": [
+      "Light, medium and full moss",
+      "Branching growth",
+      "Stage-preserving drops",
+      "Honeycomb protection"
+    ],
+    "icon": "age",
+    "version": "0.1.2",
+    "mc": "26.3",
+    "loader": "Fabric",
+    "compat": [],
+    "changelog": "Uses Mubble's edited PNG unchanged. Adds light, medium and full moss stages with fine branching geometry and two growth patterns; mined blocks retain their stage and all stages appear in creative. Medium/full moss spreads dampness to adjacent blocks. Retains older custom block IDs. Passed 2,871 server checks, four restart checks and 489 graphical client checks.",
+    "rightsConfirmed": true
+  }
+}

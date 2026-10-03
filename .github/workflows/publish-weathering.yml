@@ -1,0 +1,26 @@
+name: Publish validated Weathering release
+on:
+  push:
+    branches: [main]
+    paths: [release-inputs/weathering-0.1.2.json]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: publish-weathering-0.1.2
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reproduce the tested build and run server/restart checks
+        run: python3 tools/build-weathering-release.py
+      - name: Upload source and publish with the existing Workshop publisher
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node tools/publish-with-source.mjs .release-build/release
