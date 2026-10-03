@@ -1,0 +1,21 @@
+{
+  "id": "water-erosion",
+  "title": "Mubble's Water Erosion",
+  "author": "Mubble",
+  "type": "Mods",
+  "summary": "Flowing water gradually erodes nearby soft terrain.",
+  "description": "Replace this with the actual release description and installation instructions.",
+  "method": "Primarily AI-generated",
+  "tools": "ChatGPT",
+  "source": "https://github.com/MubbleYT/REPLACE-WITH-ACTUAL-SOURCE-REPOSITORY",
+  "license": "All rights reserved",
+  "tags": ["Terrain", "World simulation"],
+  "features": [],
+  "icon": "erosion",
+  "version": "1.0.0",
+  "mc": "26.3",
+  "loader": "Fabric",
+  "compat": [],
+  "changelog": "Initial release. Replace with what was actually tested and changed.",
+  "rightsConfirmed": false
+}
