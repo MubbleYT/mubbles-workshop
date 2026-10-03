@@ -111,6 +111,8 @@ export async function publishRelease({file, metadata, token, fetchImpl = fetch})
   }
   if (!manifest) await upload('workshop-release.json', Buffer.from(descriptor), 'application/json');
   if (release.draft) release = await request(`/releases/${release.id}`, {method:'PATCH',json:{draft:false,make_latest:'false'}});
+  // Draft asset URLs can use a temporary tag. Refresh after publication.
+  asset = release.assets.find(a => a.id === asset.id) || await request(`/releases/assets/${asset.id}`);
   const published = {...prepared.release, downloadUrl:asset.browser_download_url, publishedAt:release.published_at};
   let updated = false;
   // A file SHA guard prevents simultaneous publishers from losing each other's releases.
@@ -188,3 +190,4 @@ export async function main(args=process.argv.slice(2)) {
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   main().catch(error=>{console.error(error.message);process.exitCode=1});
 }
+
