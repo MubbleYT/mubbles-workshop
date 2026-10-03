@@ -1,0 +1,16 @@
+{
+  "name": "mubbles-workshop",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Live Workshop catalog and GitHub release publisher",
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check server.mjs && node --check dist/app.js && node --check dist/catalog.mjs && node --check tools/publish.mjs && node --check tools/upload-source.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "publish:release": "node tools/publish.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

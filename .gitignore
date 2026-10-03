@@ -1,0 +1,10 @@
+node_modules/
+.env
+.env.*
+*.jar
+*.zip
+*.mrpack
+*.log
+.DS_Store
+release-files/
+dist/.DS_Store
