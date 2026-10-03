@@ -5,6 +5,7 @@
   let saved;
   try { saved = localStorage.getItem(key); } catch {}
   let chosen = saved === 'light' || saved === 'dark' ? saved : null;
+  let fadeTimer;
 
   function apply(theme) {
     document.documentElement.dataset.theme = theme;
@@ -12,12 +13,21 @@
     if (toggle) toggle.setAttribute('aria-checked', String(theme === 'dark'));
   }
 
+  function fadeTo(theme) {
+    document.documentElement.classList.add('theme-changing');
+    // Establish the old palette with transitions enabled before changing it.
+    void document.body.offsetWidth;
+    apply(theme);
+    clearTimeout(fadeTimer);
+    fadeTimer = setTimeout(() => document.documentElement.classList.remove('theme-changing'), 700);
+  }
+
   apply(chosen || (preference.matches ? 'dark' : 'light'));
   document.addEventListener('DOMContentLoaded', () => {
     apply(document.documentElement.dataset.theme);
     document.getElementById('theme-toggle').addEventListener('click', () => {
       chosen = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-      apply(chosen);
+      fadeTo(chosen);
       try { localStorage.setItem(key, chosen); } catch {}
     });
   });

@@ -20,21 +20,18 @@
 
 @media(prefers-reduced-motion:reduce){.theme-thumb{transition:none}}
 
-/* Fade the palette while keeping card hover and switch movement responsive. */
-@media(prefers-reduced-motion:no-preference){
-  body,body *,body *::before,body *::after{
-    transition-property:background-color,color,border-color,box-shadow,fill,stroke;
-    transition-duration:.32s;
-    transition-timing-function:ease-in-out;
-  }
-  body .card{
-    transition-property:background-color,color,border-color,box-shadow,transform;
-    transition-duration:.32s,.32s,.32s,.32s,.16s;
-    transition-timing-function:ease-in-out,ease-in-out,ease-in-out,ease-in-out,ease;
-  }
-  body .theme-thumb{
-    transition-property:background-color,transform;
-    transition-duration:.32s;
-    transition-timing-function:ease-in-out;
-  }
+/* A manual appearance change explicitly opts into a gentle color fade. */
+html.theme-changing body,html.theme-changing body *,html.theme-changing body *::before,html.theme-changing body *::after{
+  transition-property:background-color,color,border-color,box-shadow,fill,stroke!important;
+  transition-duration:.6s!important;
+  transition-timing-function:ease-in-out!important;
+}
+html.theme-changing body .card{
+  transition-property:background-color,color,border-color,box-shadow,transform!important;
+  transition-duration:.6s,.6s,.6s,.6s,.16s!important;
+  transition-timing-function:ease-in-out,ease-in-out,ease-in-out,ease-in-out,ease!important;
+}
+html.theme-changing body .theme-thumb{
+  transition-property:background-color,transform!important;
+  transition-duration:.6s!important;
 }
