@@ -19,3 +19,22 @@
 @media(max-width:420px){.header{gap:12px}.brand{gap:8px;font-size:.9rem}.mark{width:32px;height:32px;font-size:22px}.header-actions .button{padding:8px;font-size:.72rem}.header-actions .button span{display:none}.theme-toggle{padding:8px}.theme-track{width:30px}.theme-toggle[aria-checked=true] .theme-thumb{transform:translateX(10px)}}
 
 @media(prefers-reduced-motion:reduce){.theme-thumb{transition:none}}
+
+/* Fade the palette while keeping card hover and switch movement responsive. */
+@media(prefers-reduced-motion:no-preference){
+  body,body *,body *::before,body *::after{
+    transition-property:background-color,color,border-color,box-shadow,fill,stroke;
+    transition-duration:.32s;
+    transition-timing-function:ease-in-out;
+  }
+  body .card{
+    transition-property:background-color,color,border-color,box-shadow,transform;
+    transition-duration:.32s,.32s,.32s,.32s,.16s;
+    transition-timing-function:ease-in-out,ease-in-out,ease-in-out,ease-in-out,ease;
+  }
+  body .theme-thumb{
+    transition-property:background-color,transform;
+    transition-duration:.32s;
+    transition-timing-function:ease-in-out;
+  }
+}
