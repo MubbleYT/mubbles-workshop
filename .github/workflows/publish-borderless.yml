@@ -1,0 +1,26 @@
+name: Publish Mubble's Borderless
+on:
+  push:
+    branches: [main]
+    paths: [release-inputs/borderless-0.1.0.json]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: publish-borderless-0.1.0
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reproduce JAR and run dedicated server and restart checks
+        run: python3 tools/build-borderless-release.py
+      - name: Publish verified JAR, source and Workshop listing
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node tools/publish-with-source.mjs .borderless-release-build/release
