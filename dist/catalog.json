@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "repository": "MubbleYT/mubbles-workshop",
-  "updatedAt": "2026-10-03T19:39:25.376Z",
+  "updatedAt": "2026-10-04T00:34:40.311Z",
   "projects": [
     {
       "id": "4k-screenshots",
@@ -34,6 +34,45 @@
           "downloadUrl": "https://github.com/MubbleYT/mubbles-workshop/releases/download/4k-screenshots--v0.1.1/mubbles-4k-screenshots-0.1.1.jar",
           "tag": "4k-screenshots--v0.1.1",
           "publishedAt": "2026-10-03T18:09:50Z"
+        }
+      ]
+    },
+    {
+      "id": "borderless",
+      "title": "Mubble's Borderless",
+      "author": "Mubble",
+      "type": "Mods",
+      "summary": "Removes the world border and vanilla 30-million-block restrictions. Expands building to Y −2032 through 2031 in every dimension.",
+      "description": "# Mubble's Borderless 0.1.0\n\nFabric mod for Minecraft Java 26.3, Java 25 and Fabric Loader 0.19.5+. Install the JAR in `mods` on the server and every client. Fabric API is used only by the separate test fixtures; the playable mod does not require it.\n\n## Behavior\n\n- Disables the visible world border, border collision, border damage and warning tint/distances in every dimension. Existing `/worldborder` settings are retained in saves but do not restrict gameplay while this mod is installed.\n- Removes the vanilla 30-million-block player tick, network movement, entity snap/load and world bounds restrictions, along with the corresponding heightmap, local brightness and `/forceload` restrictions. `/tp`, building, mining and chunk generation work outside the former border within the underlying engine's supported coordinate format.\n- Expands actual dimension/chunk build storage to **Y −2032 through 2031 inclusive** (4,064 blocks tall) in every dimension. Existing terrain generators retain their configured noise heights; this adds room for construction, not deeper natural caves or taller natural mountains. Nether portal logical heights retain their original behavior.\n- Does not add a replacement horizontal border. Invalid network numbers, ordinary reach checks, vertical network safeguards, maximum force-loaded chunk counts and world-height storage bounds remain validated.\n\n## Engine limits\n\nThis is **not infinite-coordinate or infinite-height Minecraft**. Packed block coordinates still support X/Z −33,554,432 through 33,554,431 and Y −2048 through 2047. The supported dimension codec/build range is slightly smaller vertically. Traveling beyond the packed horizontal range can break lighting, position-dependent systems and world data. There is no automatic barrier at that threshold. The tested horizontal locations are just beyond ±30 million and approximately ±32 million; do not interpret them as proof that every mod or distant-coordinate system works.\n\nExpanded chunks can use more memory and processing time. Test shader, Sodium, Voxy and other world-generation/rendering combinations separately; compatibility with those combinations has not been claimed. Back up an existing world before adding or removing a dimension-height mod. Keep the mod installed to retain blocks outside the vanilla height range: removing it can cause those sections to be ignored or lost on later saves.\n\n## Build\n\n`python3 build-direct.py --java-home /path/to/jdk25 --deps /path/to/deps`\n\nThe builder obtains the official unobfuscated 26.3 binaries and Fabric dependencies, verifies published download checksums where available, and produces a deterministic JAR. Minecraft binaries are not redistributed in this source or the mod.\n\n`python3 run-integration.py --java-home /path/to/jdk25 --deps /path/to/deps --accept-eula`\n\nRead the Minecraft EULA before launching a test server. Integration checks run in their own world and never in a user's world. Test fixture mods are excluded from the playable JAR.\n\nMIT license. Created with ChatGPT for Mubble.\n\n\nValidated with **103 server checks**, **80 real-restart checks** and **44 graphical client checks**. Source includes the fixtures and logs.",
+      "method": "Primarily AI-generated",
+      "tools": "ChatGPT",
+      "source": "https://github.com/MubbleYT/mubbles-workshop/releases/download/borderless--v0.1.0/mubbles-borderless-0.1.0-source.zip",
+      "license": "MIT",
+      "tags": [
+        "Building",
+        "World border",
+        "Exploration"
+      ],
+      "features": [
+        "Border collision and damage removed",
+        "Beyond 30 million blocks",
+        "4064-block build height",
+        "All dimensions"
+      ],
+      "icon": "nature",
+      "releases": [
+        {
+          "version": "0.1.0",
+          "mc": "26.3",
+          "loader": "Fabric",
+          "compat": [],
+          "changelog": "Initial release: disables the visible border, collision, damage and warnings. Removes 30-million-block world bounds, player/entity/network position clamps, heightmap, brightness and force-load restrictions. Expands actual building storage to Y −2032 through 2031 in all dimensions. Passed 103 server checks, 80 real-restart checks and 44 graphical client checks. Packed-coordinate and finite-height engine limits remain.",
+          "filename": "mubbles-borderless-0.1.0.jar",
+          "size": 9159,
+          "sha256": "16ef72fdb4c1b21884b0324761d61efc2546d0c49b4f52f19c22fd98efd9edb6",
+          "downloadUrl": "https://github.com/MubbleYT/mubbles-workshop/releases/download/borderless--v0.1.0/mubbles-borderless-0.1.0.jar",
+          "tag": "borderless--v0.1.0",
+          "publishedAt": "2026-10-04T00:34:39Z"
         }
       ]
     },
