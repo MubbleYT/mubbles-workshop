@@ -1,0 +1,28 @@
+name: Publish Colored Lights V0.0.9
+on:
+  push:
+    branches: [main]
+    paths: [release-inputs/colored-lights-0.0.9.json]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: publish-colored-lights-0.0.9
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstruct and verify the exact validated shader archive
+        run: python3 tools/build-colored-lights-release.py
+      - name: Validate Workshop release metadata
+        run: node tools/publish.mjs --file .release-build/colored-lights/Mubbles-Colored-Lights-26.3-v0.0.9.zip --metadata release-inputs/colored-lights-0.0.9.json --dry-run
+      - name: Publish shader and update Workshop catalog
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node tools/publish.mjs --file .release-build/colored-lights/Mubbles-Colored-Lights-26.3-v0.0.9.zip --metadata release-inputs/colored-lights-0.0.9.json
