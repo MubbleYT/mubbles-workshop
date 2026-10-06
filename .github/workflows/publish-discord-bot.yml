@@ -1,0 +1,62 @@
+name: Publish Discord bot
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'bot/source/**'
+      - 'bot/VERSION'
+      - 'bot/CHANGELOG.txt'
+      - 'bot/README.txt'
+      - 'bot/release.py'
+      - '.github/workflows/publish-discord-bot.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: publish-discord-bot
+  cancel-in-progress: false
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.27.1'
+          cache-dependency-path: bot/source/go.sum
+      - name: Run tests and checks
+        shell: bash
+        working-directory: bot/source
+        env:
+          MUBBLE_NO_BROWSER: '1'
+          MUBBLE_WINDOWS_UPDATE_TEST: '1'
+        run: |
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            go test -race ./...
+          else
+            go test -timeout 10m ./...
+          fi
+          go vet ./...
+  publish:
+    needs: test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.27.1'
+          cache-dependency-path: bot/source/go.sum
+      - name: Build executable and source package
+        run: python3 bot/release.py --build
+      - name: Publish verified online update
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 bot/release.py --publish
