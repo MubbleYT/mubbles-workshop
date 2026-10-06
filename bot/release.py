@@ -79,8 +79,9 @@ def build():
 
 
 def public_asset_matches(url, expected_hash):
-    req = urllib.request.Request(url, headers={"User-Agent": "MubbleDiscordBot-release"})
-    for attempt in range(6):
+    for attempt in range(12):
+        fresh_url = url + "?verify=" + str(time.time_ns())
+        req = urllib.request.Request(fresh_url, headers={"User-Agent": "MubbleDiscordBot-release", "Cache-Control": "no-cache"})
         try:
             with urllib.request.urlopen(req, timeout=120) as response:
                 h = hashlib.sha256()
@@ -90,7 +91,7 @@ def public_asset_matches(url, expected_hash):
                     raise RuntimeError("Published download checksum did not match")
                 return
         except urllib.error.HTTPError as exc:
-            if exc.code not in (404, 502, 503) or attempt == 5:
+            if exc.code not in (404, 502, 503) or attempt == 11:
                 raise RuntimeError(f"Published download returned HTTP {exc.code}") from None
             time.sleep(5)
     raise RuntimeError("Published download could not be verified")
@@ -105,21 +106,31 @@ def publish():
     if existing:
         if existing.get("draft"):
             raise RuntimeError("An incomplete draft already exists; review it before retrying")
-        # Never replace an already-published executable for this version.
-        print("This bot version is already published; bump bot/VERSION for a new release.")
-        return
-    release = request("/releases", "POST", {
-        "tag_name": TAG, "target_commitish": os.environ.get("GITHUB_SHA", "main"),
-        "name": "Mubble Discord Bot " + VERSION, "body": manifest["notes"],
-        "draft": True, "prerelease": False, "make_latest": "false"})
-    assets = {}
-    for name in ["MubbleDiscordBot.exe", "MubbleDiscordBot-Windows.zip", "CHECKSUMS.txt", "update.json"]:
-        path = OUT / name
-        url = release["upload_url"].split("{", 1)[0] + "?name=" + urllib.parse.quote(name)
-        assets[name] = request(url, "POST", path.read_bytes(), "application/octet-stream")
-    request("/releases/" + str(release["id"]), "PATCH", {"draft": False, "make_latest": "false"})
+        assets = {a["name"]: a for a in existing["assets"]}
+        required = {"MubbleDiscordBot.exe", "MubbleDiscordBot-Windows.zip", "CHECKSUMS.txt", "update.json"}
+        if not required.issubset(assets):
+            raise RuntimeError("Published release is missing required assets; use a new version")
+        if assets["MubbleDiscordBot.exe"].get("digest") != "sha256:" + manifest["sha256"]:
+            raise RuntimeError("This version already has different executable bytes; bump bot/VERSION")
+        if assets["update.json"].get("digest") != "sha256:" + digest(manifest_path):
+            raise RuntimeError("Published metadata changed; bump bot/VERSION")
+        print("Existing immutable release matches; retrying public verification and channel promotion.")
+    else:
+        release = request("/releases", "POST", {
+            "tag_name": TAG, "target_commitish": os.environ.get("GITHUB_SHA", "main"),
+            "name": "Mubble Discord Bot " + VERSION, "body": manifest["notes"],
+            "draft": True, "prerelease": False, "make_latest": "false"})
+        assets = {}
+        for name in ["MubbleDiscordBot.exe", "MubbleDiscordBot-Windows.zip", "CHECKSUMS.txt", "update.json"]:
+            path = OUT / name
+            url = release["upload_url"].split("{", 1)[0] + "?name=" + urllib.parse.quote(name)
+            assets[name] = request(url, "POST", path.read_bytes(), "application/octet-stream")
+        request("/releases/" + str(release["id"]), "PATCH", {"draft": False, "make_latest": "false"})
     for name in ["MubbleDiscordBot.exe", "MubbleDiscordBot-Windows.zip"]:
-        public_asset_matches(assets[name]["browser_download_url"], digest(OUT / name))
+        asset_hash = assets[name].get("digest", "")
+        if not re.fullmatch(r"sha256:[a-f0-9]{64}", asset_hash):
+            raise RuntimeError("Published asset did not provide a SHA-256 digest")
+        public_asset_matches(assets[name]["browser_download_url"], asset_hash.split(":", 1)[1])
     # A newer source release may have been queued while these tests/build ran.
     current_version = request("/contents/bot/VERSION?ref=main")
     if base64.b64decode(current_version["content"]).decode().strip() != VERSION:
