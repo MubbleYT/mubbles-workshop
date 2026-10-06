@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "version": "1.4.0",
+  "url": "https://github.com/MubbleYT/mubbles-workshop/releases/download/bot-v1.4.0/MubbleDiscordBot.exe",
+  "sha256": "5b3271787fc4d993b12578d3c2b21de0a552adb3a5f9913d0f9320c8b13e6d1c",
+  "size": 9766912,
+  "notes": "Automatic online updates, verified Windows self-replacement and startup rollback. Restored original YouTube feed notifications without API keys. All moderation and community features retained."
+}
